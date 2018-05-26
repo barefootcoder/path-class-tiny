@@ -2,6 +2,8 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
+0.01      2018-05-26 03:47:15-07:00 America/Los_Angeles
+
     [Initial Version]
     * Path::Class::Tiny isa Path::Tiny
     * `dir` and `file` => `path`
