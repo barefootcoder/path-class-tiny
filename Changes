@@ -1,0 +1,12 @@
+Revision history for Path-Class-Tiny
+
+{{$NEXT}}
+
+    [Initial Version]
+    * Path::Class::Tiny isa Path::Tiny
+    * `dir` and `file` => `path`
+    * `parent` and `child` return proper class
+    * some simple mappings: `dir` => `parent`, `subdir` => `child`,
+      `rmtree` => `remove_tree`
+    * a few minor things working: `cleanup`, `open`, `slurp`, `spew`, `next`
+    * two (hacked up) unit tests from Path::Class (mostly) passing
