@@ -120,6 +120,15 @@ sub next
 }
 
 
+# new methods
+
+sub ef
+{
+	my ($self, $other) = @_;
+	return $self->realpath eq path($other)->realpath;
+}
+
+
 1;
 
 

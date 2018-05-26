@@ -10,3 +10,4 @@ Revision history for Path-Class-Tiny
       `rmtree` => `remove_tree`
     * a few minor things working: `cleanup`, `open`, `slurp`, `spew`, `next`
     * two (hacked up) unit tests from Path::Class (mostly) passing
+    * NEW METHOD: `ef` (works like `-ef` in bash)
