@@ -265,6 +265,46 @@ The POD is somewhat impoverished at the moment.  Hopefully that will improve ove
 patches welcomed.
 
 
+=head1 PATH::CLASS STYLE METHODS
+
+=head2 cleanup
+
+Redirects to L<Path::Tiny/canonpath>.
+
+=head2 components
+
+Basically just like C<components> from L<Path::Class::Dir>, which means that it accepts offset and
+length arguments (which L<Path::Class::File> doesn't).  Another nice difference: calling
+C<components> from Path::Class::File in scalar context doesn't do anything useful, whereas
+Path::Class::Tiny always returns the number of components, which is (hopefully) what you expect.
+
+The only real difference between Path::Class::Tiny's C<components> and Path::Class::Dir's
+C<components> is that you don't get the volume returned in the Path::Class::Dir version.  In this
+version, the volume (if any) will just be part of the first component in the list.
+
+=head2 dir_list
+
+Just an alias for L</components>, so it also works on files (L<Path::Class::File> doesn't have a
+C<dir_list> method).  This means the basename is always the last entity in the list, even for files.
+Basically this is just here for compatibility's sake, and you probably shouldn't use it for new
+code, because the name doesn't really sound like what it does.
+
+=head2 next
+
+Uses L<Path::Tiny/iterator> (with its default value of no recursion) to implement the interface of
+C<next> from L<Path::Class::Dir>.  The primary difference this engenders is that the
+Path::Class::Dir version I<will> return C<.> and C<..>, whereas this version will I<not>.  I also
+don't guarantee this version is re-entrant.
+
+=head2 rmtree
+
+Just an alias to L<Path::Tiny/remove_tree>.
+
+=head2 subdir
+
+Just an alias to L<Path::Tiny/child>.
+
+
 =head1 NEW METHODS
 
 =head2 ef
