@@ -21,6 +21,7 @@ use Carp;
 use Module::Runtime qw< require_module >;
 
 
+use File::Spec ();
 use Path::Tiny ();
 our @ISA = qw< Path::Tiny >;
 
@@ -67,6 +68,31 @@ sub open		{ my $io_class = -d $_[0] ? 'IO::Dir' : 'IO::File'; require_module $io
 
 
 # reimplementations
+
+sub dir_list
+{
+	my $self = shift;
+	my @list = ( File::Spec->splitdir($self->parent), $self->basename );
+
+	# The return value of dir_list is remarkably similar to that of splice: it's identical for all
+	# cases in list context, and even for one case in scalar context.  So we'll cheat and use splice
+	# for most of the cases, and handle the other two scalar context cases specially.
+	if (@_ == 0)
+	{
+		return @list;			# will DTRT regardless of context
+	}
+	elsif (@_ == 1)
+	{
+		return wantarray ? splice @list, $_[0] : $list[shift];
+	}
+	else
+	{
+		return splice @list, $_[0], $_[1];
+	}
+}
+# components is really just an alias for `dir_list`
+*components	=	\&dir_list;
+
 
 # This is more or less how Path::Class::File does it.
 sub slurp

@@ -5,6 +5,10 @@ Revision history for Path-Class-Tiny
     [Bug Fixes]
     * `parent` is returning the proper class now
 
+    [New Features]
+    * `dir_list` works now
+    * `components` works (just an alias for `dir_list`, really)
+
     [Distro Fixes]
     * minor tweaks to POD
     * more unit tests
