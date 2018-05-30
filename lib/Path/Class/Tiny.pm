@@ -55,7 +55,8 @@ sub child { path(shift->[0], @_) }
 
 
 # essentially just reblessings
-sub parent	{ path( &Path::Tiny::parent ) }
+sub parent		{ path( &Path::Tiny::parent   ) }
+sub realpath	{ path( &Path::Tiny::realpath ) }
 
 # simple correspondences
 *dir		=	\&parent;

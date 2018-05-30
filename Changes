@@ -2,6 +2,9 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
+    [Bug Fixes]
+    * `realpath` is returning the proper class now
+
 0.02      2018-05-29 19:24:08-07:00 America/Los_Angeles
 
     [Bug Fixes]

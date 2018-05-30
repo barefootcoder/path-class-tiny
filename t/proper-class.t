@@ -17,6 +17,7 @@ isa_ok $dir->dir, $CLASS, "obj returned by dir()";
 isa_ok $dir->child('foo'), $CLASS, "obj returned by child()";
 isa_ok $dir->file('foo'), $CLASS, "obj returned by file()";
 isa_ok $dir->subdir('foo'), $CLASS, "obj returned by subdir()";
+isa_ok $dir->realpath, $CLASS, "obj returned by realpath()";
 
 
 done_testing;
