@@ -1,5 +1,8 @@
 use Test::Most 0.25;
 
+plan skip_all => "Skipping the test on MSWin32 platform."
+     if ($^O eq 'MSWin32');
+
 use Path::Class::Tiny;
 
 use Path::Tiny ();
