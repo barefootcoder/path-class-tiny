@@ -57,7 +57,7 @@ sub child { path(shift->[0], @_) }
 sub parent	{ path( &Path::Tiny::parent ) }
 
 # simple correspondences
-*dir		=	\&Path::Tiny::parent;
+*dir		=	\&parent;
 *subdir		=	\&child;
 *rmtree		=	\&Path::Tiny::remove_tree;
 
