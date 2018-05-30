@@ -5,6 +5,9 @@ Revision history for Path-Class-Tiny
     [Bug Fixes]
     * `realpath` is returning the proper class now
 
+    [Distro Fixes]
+    * try get CPAN Testers to quit whining about Test::Differences
+
 0.02      2018-05-29 19:24:08-07:00 America/Los_Angeles
 
     [Bug Fixes]
