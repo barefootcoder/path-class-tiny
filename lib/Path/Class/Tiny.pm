@@ -220,7 +220,12 @@ sent as a hash and B<not> as a hashref.
 
 =head1 DETAILS
 
-A Path::Class::Tiny isa Path::Tiny, but I<not> isa Path::Class::Entity.  At least not currently.
+B<This module is still undergoing active development.>  While the general UI is somewhat constrained
+by the design goals, specific choices may, and almost certainly will, change.  I think this module
+can be useful to you, but for right now I would only use it for personal scripts.
+
+A Path::Class::Tiny C<isa> Path::Tiny, but I<not> C<isa> Path::Class::Entity.  At least not
+currently.
 
 Path::Class::Tiny is not entirely a drop-in replacement for Path::Class, and most likely never will
 be.  In particular, I have no interest in implementing any of the "foreign" methods.  However, it
