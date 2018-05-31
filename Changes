@@ -2,10 +2,7 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
-    [Distro Fixes]
-    * better unit test separation for tests that require symlinks
-
-0.02_01   2018-05-30 03:14:26-07:00 America/Los_Angeles (TRIAL RELEASE)
+0.03      2018-05-31 14:57:25-07:00 America/Los_Angeles
 
     [Bug Fixes]
     * `realpath` is returning the proper class now
@@ -13,6 +10,8 @@ Revision history for Path-Class-Tiny
     [Distro Fixes]
     * try get CPAN Testers to quit whining about Test::Differences
     * add more POD so I can re-enable extra tests
+    * better unit test separation for tests that require symlinks
+      (GitHub #2) thanks manwar!
 
 0.02      2018-05-29 19:24:08-07:00 America/Los_Angeles
 
@@ -25,6 +24,7 @@ Revision history for Path-Class-Tiny
 
     [Distro Fixes]
     * stop trying to make symlinks on Windows (GitHub #1)
+      thanks manwar!
     * minor tweaks to POD
     * more unit tests
 
