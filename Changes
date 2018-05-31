@@ -2,6 +2,9 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
+    [Distro Fixes]
+    * better unit test separation for tests that require symlinks
+
 0.02_01   2018-05-30 03:14:26-07:00 America/Los_Angeles (TRIAL RELEASE)
 
     [Bug Fixes]
