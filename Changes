@@ -2,6 +2,11 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
+    [New Features]
+    * limited integration with Date::Easy:
+      * can send `touch` a datetime object
+      * new method: `mtime` (returns a datetime object)
+
 0.03      2018-05-31 14:57:25-07:00 America/Los_Angeles
 
     [Bug Fixes]

@@ -68,6 +68,15 @@ sub cleanup		{ path(shift->canonpath) }
 sub open		{ my $io_class = -d $_[0] ? 'IO::Dir' : 'IO::File'; require_module $io_class; $io_class->new(@_) }
 
 
+# wrappers
+sub touch
+{
+	my ($self, $dt) = @_;
+	$dt = $dt->epoch if defined $dt and $dt->can('epoch');
+	$self->SUPER::touch($dt);
+}
+
+
 # reimplementations
 
 sub dir_list
@@ -153,6 +162,13 @@ sub ef
 {
 	my ($self, $other) = @_;
 	return $self->realpath eq path($other)->realpath;
+}
+
+
+sub mtime
+{
+	require Date::Easy::Datetime or croak("can't locate Date::Easy");
+	return Date::Easy::Datetime->new(shift->stat->mtime);
 }
 
 
@@ -304,6 +320,45 @@ Just an alias to L<Path::Tiny/remove_tree>.
 
 Just an alias to L<Path::Tiny/child>.
 
+=head2 touch
+
+Basically just calls L<Path::Tiny/touch>, which is better than L<Path::Class::File/touch> in a
+couple of ways:
+
+=over
+
+=item *
+
+It returns the path object, which is useful for chaining.
+
+=item *
+
+It takes an argument, so you can set the time to something other than "now."
+
+=back
+
+However, C<Path::Class::Tiny::touch> is even better than that!  It adds another cool feature:
+
+=over
+
+=item *
+
+If the argument is an object, and that object has an C<epoch> method, it will call it and pass the
+result on to C<Path::Tiny::touch>.
+
+=back
+
+The practical result is that your argument to C<touch> can be an integer (number of epoch seconds),
+or any of the most popular datetime objects: L<DateTime>, L<Time::Piece>, L<Time::Moment>,
+L<Date::Easy>, and possibly others as well.
+
+B<Potential Incompatibility:> The only way these additional features could be incompatible with
+existing C<Path::Class> code is if it were relying on the return value from C<touch>, which in
+C<Path::Class> is either the return from C<open> or the return from C<utime> (so theoretically it's
+true if the C<touch> was successful and false otherwise).  C<Path::Tiny> (and thus
+C<Path::Class::Tiny>) will instead throw an exception if the C<touch> was unsuccessful and return
+the chained object.
+
 
 =head1 NEW METHODS
 
@@ -328,3 +383,39 @@ work, really.  Do note that both files must actually exist in the filesystem tho
 for both to be exactly the same object:
 
     if ( $file1->ef($file1) )   # always true
+
+=head2 mtime
+
+This is mostly just a shortcut for going through C<stat>, but it has the added benefit of producing
+a L<Date::Easy::Datetime> object.  Thus:
+
+    my $file = path($whatever);
+    $file->mtime == $file->stat->mtime        # true, but maybe not for the reason you thought
+    $file->mtime->epoch == $file->stat->mtime # true, and more reflective of reality
+    $file->mtime->isa('Date::Easy::Datetime') # true, which can be handy:
+
+    say $file->mtime->as('-Ymd')    # day portion of mtime, in YYYY-mm-dd format
+    say "file is from the future!"  # this one will work, but only if you have
+        if $file->mtime > now;      # previously done `use Date::Easy` (to get `now`)
+
+Note that C<Date::Easy::Datetime> is loaded on demand, so:
+
+=over
+
+=item *
+
+It is not necessary for you to load it ahead of time.
+
+=item *
+
+However, as the example above mentions, you don't get all the exports you would if you C<use
+Date::Easy>, so you may wish to do that anyway.
+
+=item *
+
+If L<Date::Easy> is not installed, you get a runtime error when you call C<mtime>.
+
+=back
+
+
+=cut
