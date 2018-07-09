@@ -57,6 +57,7 @@ sub child { path(shift->[0], @_) }
 # essentially just reblessings
 sub parent		{ path( &Path::Tiny::parent   )          }
 sub realpath	{ path( &Path::Tiny::realpath )          }
+sub copy_to		{ path( &Path::Tiny::copy     )          }
 sub children	{ map { path($_) } &Path::Tiny::children }
 
 # simple correspondences
@@ -75,6 +76,21 @@ sub touch
 	my ($self, $dt) = @_;
 	$dt = $dt->epoch if defined $dt and $dt->can('epoch');
 	$self->SUPER::touch($dt);
+}
+
+sub move_to
+{
+	my ($self, $dest) = @_;
+	$self->move($dest);
+	# if we get this far, the move must have succeeded
+	# this is basically the way Path::Class::File does it:
+	my $new = path($dest);
+	my $max_idx = $#$self > $#$new ? $#$self : $#$new;
+	# yes, this is a mutator, which could be considered bad
+	# OTOH, the file is actually mutating on the disk,
+	# so you can also consider it good that the object mutates to keep up
+	$self->[$_] = $new->[$_] foreach 0..$max_idx;
+	return $self;
 }
 
 
@@ -359,6 +375,76 @@ C<Path::Class> is either the return from C<open> or the return from C<utime> (so
 true if the C<touch> was successful and false otherwise).  C<Path::Tiny> (and thus
 C<Path::Class::Tiny>) will instead throw an exception if the C<touch> was unsuccessful and return
 the chained object.
+
+=head2 copy_to
+
+Just an alias to L<Path::Tiny/copy>.
+
+=head2 move_to
+
+There are two big differences between L<Path::Tiny/move> and L<Path::Class::File/move_to>:
+
+=over
+
+=item *
+
+On failure, C<Path::Class::File::move_to> returns undef, while C<Path::Tiny::move> throws an
+exception.
+
+=item *
+
+On success, C<Path::Tiny::move> just returns true.  C<Path::Class::File::move_to>, on the other
+hand, returns the path object for chaining, B<which has been modified to have the new name>.
+
+=back
+
+C<Path::Class::Tiny> splits the difference by throwing an exception on error, and returning the
+modified C<$self> on success.  B<That means this method is a mutator!>  Consequently, use of this
+method means your objects are not immutable.  No doubt many people will object to this behavior.
+However, after some internal debate, it was decided to retain this aspect of L<Path::Class>'s
+interface for the following reasons:
+
+=over
+
+=item *
+
+It keeps from breaking existing C<Path::Class> code that you're trying to convert over to
+C<Path::Class::Tiny>.  While we do implement I<some> breaking changes, most of them feel a lot
+less likely to be encountered in real code than this one.
+
+=item *
+
+The real-world thing that the object represents--that is, the file on disk--is itself being mutated.
+If the object is not changed to reflect the new reality, then any stray copies of it lying around
+now reference a file that doesn't exist.  So it seems just about as likely to I<fix> a problem as to
+cause one.
+
+=item *
+
+If you don't like the mutability, just call L</move> instead.
+
+=back
+
+
+=head1 PATH::TINY STYLE METHODS
+
+Since a C<Path::Class::Tiny> object C<isa> L<Path::Tiny> object, the vast majority of C<Path::Tiny>
+methods just work the same way they always have.  Notable methods (with exceptions or just
+clarifications) are listed below.
+
+=head2 move
+
+Unchanged from L<Path::Tiny>, which means it's I<quite> different from L</move_to>.  In particular,
+C<move> does B<not> mutate the object, which means that code like this:
+
+    my $file = path($whatever);
+    $file->move($new_name);
+    say $file->basename;
+
+does B<not> give you the basename of the file-as-it-is, but rather the basename of the
+file-as-it-was, which could be considered less useful.  But at least it doesn't mutate the object,
+so it's got that going for it.  If you actually I<want> the object to be mutated, try L</move_to>
+instead.
 
 
 =head1 NEW METHODS

@@ -6,6 +6,7 @@ Revision history for Path-Class-Tiny
     * `children` is returning the proper class now
 
     [New Features]
+    * `copy_to` and `move_to` work now
     * limited integration with Date::Easy:
       * can send `touch` a datetime object
       * new method: `mtime` (returns a datetime object)
