@@ -1,11 +1,15 @@
 use Test::Most 0.25;
 
+# local test modules
+use File::Spec;
+use Cwd 'abs_path';
+use File::Basename;
+use lib File::Spec->catdir(dirname(abs_path($0)), 'lib');
+use Test::PathClassTiny::Utils;
+
 use Path::Class::Tiny;
 
 use Path::Tiny ();
-use Module::Runtime qw< module_notional_filename >;
-
-sub loads_ok(&$$);				# see below
 
 
 my $dir = path(Path::Tiny->tempdir)->child('dates');
@@ -23,15 +27,3 @@ is $a->mtime, $dt, "`mtime` returns same datetime sent to `touch`";
 
 
 done_testing;
-
-
-# stolen from: https://github.com/barefootcoder/common/blob/master/perl/myperl/t/autoload.t
-sub loads_ok (&$$)
-{
-	my ($sub, $function, $module) = @_;
-	my $module_key = module_notional_filename($module);
-
-	is exists $INC{$module_key}, '', "haven't yet loaded: $module";
-	lives_ok { $sub->() } "can call $function()";
-	is exists $INC{$module_key}, 1, "have now loaded: $module";
-}
