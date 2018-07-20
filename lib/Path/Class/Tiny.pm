@@ -7,7 +7,7 @@ use warnings;
 # VERSION
 
 use Exporter;
-our @EXPORT = qw< path file >;
+our @EXPORT = qw< cwd path file >;
 
 sub import
 {
@@ -29,6 +29,12 @@ our @ISA = qw< Path::Tiny >;
 sub path
 {
 	bless Path::Tiny::path(@_), __PACKAGE__;
+}
+
+sub cwd
+{
+	require Cwd;
+	path(Cwd::getcwd());
 }
 
 *file = \&path;
