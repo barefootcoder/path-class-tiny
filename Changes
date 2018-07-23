@@ -2,7 +2,7 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
-0.03_01   2018-07-19 19:10:08-07:00 America/Los_Angeles (TRIAL RELEASE)
+0.04      2018-07-23 03:34:07-07:00 America/Los_Angeles
 
     [Bug Fixes]
     * `children` is returning the proper class now
