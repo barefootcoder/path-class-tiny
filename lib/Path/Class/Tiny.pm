@@ -7,7 +7,7 @@ use warnings;
 # VERSION
 
 use Exporter;
-our @EXPORT = qw< cwd path file >;
+our @EXPORT = qw< cwd path file >;					# dir() handled by `import`
 
 sub import
 {
@@ -61,10 +61,10 @@ sub child { path(shift->[0], @_) }
 
 
 # essentially just reblessings
-sub parent		{ path( &Path::Tiny::parent   )          }
-sub realpath	{ path( &Path::Tiny::realpath )          }
-sub copy_to		{ path( &Path::Tiny::copy     )          }
-sub children	{ map { path($_) } &Path::Tiny::children }
+sub parent		{ path( &Path::Tiny::parent   )            }
+sub realpath	{ path( &Path::Tiny::realpath )            }
+sub copy_to		{ path( &Path::Tiny::copy     )            }
+sub children	{ map { path($_) } &Path::Tiny::children   }
 
 # simple correspondences
 *dir		=	\&parent;
