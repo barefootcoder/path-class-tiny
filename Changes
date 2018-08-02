@@ -2,6 +2,9 @@ Revision history for Path-Class-Tiny
 
 {{$NEXT}}
 
+    [New Features]
+    * `tempfile` works now, and is exported
+
 0.04      2018-07-23 03:34:07-07:00 America/Los_Angeles
 
     [Bug Fixes]

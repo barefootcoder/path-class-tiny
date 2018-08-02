@@ -7,7 +7,7 @@ use warnings;
 # VERSION
 
 use Exporter;
-our @EXPORT = qw< cwd path file >;					# dir() handled by `import`
+our @EXPORT = qw< cwd path file tempfile >;			# dir() handled by `import`
 
 sub import
 {
@@ -65,6 +65,7 @@ sub parent		{ path( &Path::Tiny::parent   )            }
 sub realpath	{ path( &Path::Tiny::realpath )            }
 sub copy_to		{ path( &Path::Tiny::copy     )            }
 sub children	{ map { path($_) } &Path::Tiny::children   }
+sub tempfile    { bless &Path::Tiny::tempfile, __PACKAGE__ }
 
 # simple correspondences
 *dir		=	\&parent;
@@ -451,6 +452,30 @@ does B<not> give you the basename of the file-as-it-is, but rather the basename 
 file-as-it-was, which could be considered less useful.  But at least it doesn't mutate the object,
 so it's got that going for it.  If you actually I<want> the object to be mutated, try L</move_to>
 instead.
+
+=head2 tempfile
+
+Basically works just like L<Path::Tiny/tempfile>, except it:
+
+=over
+
+=item *
+
+is exported whether you like it or not.
+
+=item *
+
+can't be called as a class method, only a global function.
+
+=item *
+
+returns a Path::Class::Tiny instead of a Path::Tiny (obviously).
+
+=back
+
+Other than that, it retains all the coolness of C<Path::Tiny::tempfile>, including the normalization
+of arguments, the handling of template as either named or positional argument, and the addition of
+C<< TMPDIR => 1 >> as a default (which you can override).
 
 
 =head1 NEW METHODS
