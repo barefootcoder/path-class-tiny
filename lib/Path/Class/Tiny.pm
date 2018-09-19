@@ -69,6 +69,7 @@ sub tempfile    { bless &Path::Tiny::tempfile, __PACKAGE__ }
 
 # simple correspondences
 *dir		=	\&parent;
+*dirname	=	\&parent;
 *subdir		=	\&child;
 *rmtree		=	\&Path::Tiny::remove_tree;
 
@@ -301,9 +302,6 @@ should work for most common cases, and, if it doesn't, patches are welcome.
 Performance of Path::Class::Tiny should be comparable to Path::Tiny.  Again, if it's not, please let
 me know.
 
-The POD is somewhat impoverished at the moment.  Hopefully that will improve over time.  Again,
-patches welcomed.
-
 
 =head1 PATH::CLASS STYLE METHODS
 
@@ -479,6 +477,12 @@ C<< TMPDIR => 1 >> as a default (which you can override).
 
 
 =head1 NEW METHODS
+
+=head2 dirname
+
+Since C<dirname> in Path::Tiny is stupid, and C<dirname> in Path::Class doesn't even exist,
+C<dirname> in Path::Class::Tiny is just an alias for C<parent>, on the grounds that that's almost
+certainly what you wanted anyway.
 
 =head2 ef
 
