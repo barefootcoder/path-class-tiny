@@ -148,8 +148,10 @@ sub slurp
 	else
 	{
 		croak "'split' argument can only be used in list context" if $splitter;
-		croak "'chomp' argument not implemented in scalar context" if exists $args{chomp};
-		return $self->Path::Tiny::slurp(\%args);
+		my $do_chomp = delete $args{chomp};
+		my $data = $self->Path::Tiny::slurp(\%args);
+		chomp $data if $do_chomp;
+		return $data;
 	}
 }
 
@@ -281,10 +283,15 @@ sent as a hash and B<not> as a hashref.
     my $data = $file->slurp;                        # one big string
     my @data = $file->slurp;                        # one element per line
     my @data = $file->slurp(chomp => 1);            # chomp every line
+    my $data = $file->slurp(chomp => 1);            # chomp trailing newline
     my @data = $file->slurp(iomode => '<:crlf');    # Path::Class style; works
     my @data = $file->slurp(binmode => ':crlf');    # vaguely Path::Tiny style; also works
-    my @data = $file->slurp({binmode => ':crlf'});  # this one doesn't work
-    my $data = $file->slurp(chomp => 1);            # neither does this one, because it's weird
+    my @data = $file->slurp({binmode => ':crlf'});  # this one doesn't work (hashref instead of hash)
+
+Note that this one: C<< my $data = $file->slurp(chomp => 1) >> is a I<little> weird, because,
+assuming your file has multiple lines, you're only going to chomp the last one.  But perhaps your
+file only has one line, in which case autochomping that single line on the way out is quite useful.
+So we make it work even in scalar context.
 
 
 =head1 DETAILS
