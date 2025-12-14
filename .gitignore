@@ -18,3 +18,8 @@ nytprof.out
 /pm_to_blib
 *.o
 *.bs
+
+# Personal developer AI tool configurations
+.aider*
+.mcp.json
+**/.claude/settings.local.json
